@@ -2,18 +2,48 @@
 <html lang="ja">
   <head>
     <meta charset="UTF-8" />
-    <title>予約管理システム</title>
+    <title>バス運行システム</title>
     <!-- レスポンシブ対応用 -->
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no"
     />
-    <link rel="stylesheet" href="/main.css" />
+    <link rel="stylesheet" href="/top.css" />
   </head>
   <body>
     <header>
-      <h1>バス運行システム</h1>
+      <h1>系統•行先設定画面</h1>
     </header>
-    <main>次回以降実装開始</main>
+    <main>
+      <form action="" method="get">
+        <label for="">系統</label>
+        <select name="系統" id="系統">
+          <option value="1">幹名駅2</option>
+          <option value="2">名駅20</option>
+          <option value="3">金山22</option>
+        </select>
+
+        <label for="">行先</label>
+        <select name="行先" id="行先">
+          <option value="1">野跡駅</option>
+          <option value="2">中川車庫前</option>
+          <option value="3">戸田</option>
+        </select>
+
+        <input type="submit" value="運行開始" />
+      </form>
+      <div class="printStation">
+        <div class="printHeader">
+          <h3>駅一覧</h3>
+          <h3>合計33駅</h3>
+        </div>
+        <p>名古屋駅</p>
+        <p>六反公園</p>
+        <p>篠原橋</p>
+        <p>東海橋</p>
+        <p>稲永町</p>
+        <p>野跡駅</p>
+      </div>
+    </main>
   </body>
 </html>
