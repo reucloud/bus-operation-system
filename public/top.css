@@ -1,0 +1,24 @@
+.printHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.printHeader h3 {
+  margin-right: 20px;
+}
+
+.printStation {
+  max-height: 220px; /* 必要に応じて調整してください */
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch; /* モバイルでスムーズスクロール */
+  border: 1px solid #e0e0e0;
+  padding: 12px;
+  background: #fff;
+}
+
+.printStation p {
+  margin: 6px 0;
+}
