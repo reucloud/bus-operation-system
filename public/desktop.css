@@ -1,0 +1,176 @@
+/* デスクトップ（モニター）用スタイル */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family:
+    "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans",
+    Meiryo, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+}
+
+header {
+  display: flex;
+  width: 100%;
+  padding: 30px;
+  gap: 20px;
+}
+
+header {
+  h1,
+  form {
+    width: 25%;
+    font-size: 28px;
+    color: #333;
+    text-align: center;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+header form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+header form input[type="submit"] {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+  border: none;
+  padding: 15px 25px;
+  font-size: 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+header form input[type="submit"]:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+/* メインコンテンツのスタイル */
+main {
+  padding: 30px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.mainHeader {
+  display: flex;
+  gap: 30px;
+  margin-bottom: 30px;
+}
+
+.mainHeader h2 {
+  background: #fff;
+  padding: 20px 30px;
+  border-radius: 8px;
+  color: #333;
+  font-size: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  flex: 1;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.showStation {
+  background: #fff;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  overflow-x: auto;
+  min-height: 400px;
+}
+
+.showStation {
+  display: grid;
+  grid-template-columns: 10% 70% 15% 5%;
+  align-items: center;
+}
+
+.showStation h3 {
+  padding: 18px 12px;
+  background: #f8f9fa;
+  border-radius: 6px;
+  color: #333;
+  font-size: 16px;
+  text-align: center;
+  border-left: 4px solid #667eea;
+  transition: background 0.2s ease;
+  word-wrap: break-word;
+  min-width: 0;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.showStation h3:hover {
+  background: #e9ecef;
+}
+
+/* 遅延時間の色分け */
+.showStation h3:nth-child(4n) {
+  font-weight: bold;
+}
+
+/* Footer スタイル */
+footer {
+  display: flex;
+  gap: 30px;
+  padding: 30px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+footer h2,
+footer form {
+  background: #fff;
+  padding: 20px 30px;
+  border-radius: 8px;
+  color: #333;
+  font-size: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  flex: 1;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+footer form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+footer form input[type="submit"] {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+  border: none;
+  padding: 15px 25px;
+  font-size: 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+footer form input[type="submit"]:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}

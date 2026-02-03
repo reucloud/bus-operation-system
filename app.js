@@ -47,14 +47,44 @@ app.use(
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
-// 簡単なルート
+// 簡単なルート（デバイス判定）
 app.get("/", (req, res) => {
-  res.render("index");
+  // URLパラメータで強制指定できる (?view=desktop または ?view=tablet)
+  const forceView = req.query.view;
+
+  if (forceView === "tablet") {
+    return res.render("index-tablet");
+  }
+  if (forceView === "desktop") {
+    return res.render("index-desktop");
+  }
+
+  // 通常のUser-Agent判定
+  const ua = req.headers["user-agent"] || "";
+  const isTablet = /iPad|Android.*Tablet/i.test(ua);
+
+  if (isTablet) {
+    // iPad用画面
+    res.render("index-tablet");
+  } else {
+    // デスクトップ（モニター）用画面
+    res.render("index-desktop");
+  }
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  const url = `http://localhost:${PORT}`;
-  console.log(`Server listening on ${url}`);
-  open(url);
+app.listen(PORT, async () => {
+  const baseUrl = `http://localhost:${PORT}`;
+  console.log(`Server listening on ${baseUrl}`);
+  console.log("Opening 2 windows...");
+  console.log(`Desktop view: ${baseUrl}?view=desktop`);
+  console.log(`Tablet view: ${baseUrl}?view=tablet`);
+
+  // デスクトップ画面を開く
+  await open(`${baseUrl}?view=desktop`, { app: { name: "google chrome" } });
+
+  // 少し待ってからiPad画面を開く
+  setTimeout(() => {
+    open(`${baseUrl}?view=tablet`, { app: { name: "google chrome" } });
+  }, 1000);
 });
