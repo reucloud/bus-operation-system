@@ -1,0 +1,137 @@
+/* iPad（タブレット）用スタイル */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family:
+    "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans",
+    Meiryo, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+}
+
+header {
+  background: #fff;
+  padding: 25px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+  font-size: 28px;
+  color: #333;
+  text-align: center;
+}
+
+main {
+  padding: 25px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.tablet-form {
+  background: #fff;
+  border-radius: 12px;
+  padding: 30px;
+  margin-bottom: 25px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.tablet-form label {
+  display: block;
+  font-size: 20px;
+  font-weight: 600;
+  margin: 20px 0 10px 0;
+  color: #333;
+}
+
+.tablet-form label:first-of-type {
+  margin-top: 0;
+}
+
+select {
+  width: 100%;
+  padding: 18px;
+  font-size: 20px;
+  border: 2px solid #ddd;
+  border-radius: 10px;
+  background: #f9f9f9;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+select:focus {
+  outline: none;
+  border-color: #667eea;
+  background: #fff;
+}
+
+input[type="submit"] {
+  width: 100%;
+  padding: 20px;
+  font-size: 22px;
+  font-weight: bold;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-top: 25px;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
+}
+
+input[type="submit"]:active {
+  transform: scale(0.98);
+}
+
+.printStation {
+  background: #fff;
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  max-height: 400px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.printHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  padding-bottom: 15px;
+  border-bottom: 3px solid #667eea;
+}
+
+.printHeader h3 {
+  font-size: 20px;
+  color: #333;
+}
+
+.printStation p {
+  padding: 15px;
+  margin: 10px 0;
+  background: #f9f9f9;
+  border-left: 5px solid #667eea;
+  border-radius: 6px;
+  font-size: 18px;
+}
+
+/* iPad用スクロールバー */
+.printStation::-webkit-scrollbar {
+  width: 10px;
+}
+
+.printStation::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.printStation::-webkit-scrollbar-thumb {
+  background: #667eea;
+  border-radius: 10px;
+}

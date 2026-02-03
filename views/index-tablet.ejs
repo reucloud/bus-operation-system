@@ -2,28 +2,27 @@
 <html lang="ja">
   <head>
     <meta charset="UTF-8" />
-    <title>バス運行システム</title>
-    <!-- レスポンシブ対応用 -->
+    <title>バス運行システム - iPad</title>
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no"
     />
-    <link rel="stylesheet" href="/top.css" />
+    <link rel="stylesheet" href="/tablet.css" />
   </head>
   <body>
     <header>
-      <h1>系統•行先設定画面</h1>
+      <h1>運行画面</h1>
     </header>
     <main>
-      <form action="" method="get">
-        <label for="">系統</label>
+      <form action="" method="get" class="tablet-form">
+        <label for="系統">系統</label>
         <select name="系統" id="系統">
           <option value="1">幹名駅2</option>
           <option value="2">名駅20</option>
           <option value="3">金山22</option>
         </select>
 
-        <label for="">行先</label>
+        <label for="行先">行先</label>
         <select name="行先" id="行先">
           <option value="1">野跡駅</option>
           <option value="2">中川車庫前</option>
@@ -32,6 +31,7 @@
 
         <input type="submit" value="運行開始" />
       </form>
+
       <div class="printStation">
         <div class="printHeader">
           <h3>駅一覧</h3>
