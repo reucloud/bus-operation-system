@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <title>バス運行システム - 案内表示</title>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no"
+    />
+    <link rel="stylesheet" href="/navigation.css" />
+  </head>
+  <body>
+    <header>
+      <h1>🚌 運行案内</h1>
+    </header>
+    <main>
+      <div class="courseName">
+        <h2>幹名駅2系統 野跡駅行き</h2>
+      </div>
+
+      <div class="infoBar">
+        <div class="infoItem">
+          <span class="icon">📍</span>
+          <span class="label">次の停留所</span>
+          <span class="value">篠原橋</span>
+        </div>
+        <div class="infoItem">
+          <span class="icon">⏱️</span>
+          <span class="label">到着予定</span>
+          <span class="value">約3分</span>
+        </div>
+        <div class="infoItem">
+          <span class="icon">🚏</span>
+          <span class="label">残り停留所</span>
+          <span class="value">5箇所</span>
+        </div>
+      </div>
+
+      <div class="courseStation">
+        <div class="status">
+          <h3>経由地</h3>
+        </div>
+        <div class="stations">
+          <h3>名古屋駅</h3>
+          <h3>六反公園</h3>
+          <h3>篠原橋</h3>
+          <h3>東海橋</h3>
+          <h3>稲永町</h3>
+          <h3>野跡駅</h3>
+        </div>
+      </div>
+      <div class="currentTime">
+        <h3>🕐 現在時刻</h3>
+        <p id="clock">10:00</p>
+      </div>
+    </main>
+    <script>
+      // リアルタイム時計
+      function updateClock() {
+        const now = new Date();
+        const hours = String(now.getHours()).padStart(2, "0");
+        const minutes = String(now.getMinutes()).padStart(2, "0");
+        const seconds = String(now.getSeconds()).padStart(2, "0");
+        document.getElementById("clock").textContent =
+          `${hours}:${minutes}:${seconds}`;
+      }
+      updateClock();
+      setInterval(updateClock, 1000);
+    </script>
+  </body>
+</html>

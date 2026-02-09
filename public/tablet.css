@@ -105,6 +105,11 @@ input[type="submit"]:active {
   margin-bottom: 15px;
   padding-bottom: 15px;
   border-bottom: 3px solid #667eea;
+  width: 100%;
+}
+
+.printHeader input {
+  width: 40%;
 }
 
 .printHeader h3 {
