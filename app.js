@@ -53,10 +53,10 @@ app.get("/", (req, res) => {
   const forceView = req.query.view;
 
   if (forceView === "tablet") {
-    return res.render("index-tablet");
+    return res.render("destinationSetting");
   }
   if (forceView === "desktop") {
-    return res.render("index-desktop");
+    return res.render("operationTime");
   }
 
   // 通常のUser-Agent判定
@@ -65,11 +65,26 @@ app.get("/", (req, res) => {
 
   if (isTablet) {
     // iPad用画面
-    res.render("index-tablet");
+    res.render("destinationSetting");
   } else {
     // デスクトップ（モニター）用画面
-    res.render("index-desktop");
+    res.render("operationTime");
   }
+});
+
+// 系統設定画面（タブレット画面）へのルート
+app.get("/destinationSetting", (req, res) => {
+  res.render("destinationSetting");
+});
+
+// 全駅表示画面（デスクトップ画面）へのルート
+app.get("/navigation", (req, res) => {
+  res.render("navigation");
+});
+
+// 時刻管理画面（画面）へのルート
+app.get("/operationTime", (req, res) => {
+  res.render("operationTime");
 });
 
 const PORT = process.env.PORT || 3000;
