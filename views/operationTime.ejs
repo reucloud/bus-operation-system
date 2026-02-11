@@ -21,20 +21,17 @@
         <h2>幹名駅2 名古屋駅→野跡駅</h2>
       </div>
       <div class="showStation">
-        <% const stations = [ { code: "001", name: "長良橋", clock: "10:00" ,minus: 0},{ code: "001", name: "東海橋", clock: "10:05" ,minus: -5}, { code: "002", name: "稲永町", clock: "10:10" ,minus: -10}, { code: "003", name: "野跡駅", clock: "10:15" ,minus: -15} ]; %>
-        <% for (let i = 0; i < stations.length; i++) { %>
-          <h3 class="number"><%= stations[i].code %></h3>
-          <h3 class="name"><%= stations[i].name %></h3>
-          <h3 class="time"><%= stations[i].clock %>発</h3>
-          <h3 class="minus"><%= stations[i].minus %></h3>
-        <% } %>
+        <h3 class="number"><%= stations[i].code %></h3>
+        <h3 class="name"><%= stations[i].name %></h3>
+        <h3 class="time"><%= stations[i].clock %>発</h3>
+        <h3 class="minus"><%= stations[i].minus %></h3>
       </div>
     </main>
     <footer>
-        <form action="/all-stations" method="get">
-          <input type="submit" value="全駅表示">
-        </form>
-        <h2>現在時刻表示</h2>
+      <form action="/all-stations" method="get">
+        <input type="submit" value="全駅表示" />
+      </form>
+      <h2>現在時刻表示</h2>
     </footer>
   </body>
 </html>
