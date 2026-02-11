@@ -53,7 +53,7 @@ app.get("/", (req, res) => {
   const forceView = req.query.view;
 
   if (forceView === "tablet") {
-    return res.render("destinationSetting");
+    return res.redirect("/destinationSetting");
   }
   if (forceView === "desktop") {
     return res.render("operationTime");
@@ -65,16 +65,164 @@ app.get("/", (req, res) => {
 
   if (isTablet) {
     // iPad用画面
-    res.render("destinationSetting");
+    res.redirect("/destinationSetting");
   } else {
     // デスクトップ（モニター）用画面
     res.render("operationTime");
   }
 });
 
-// 系統設定画面（タブレット画面）へのルート
 app.get("/destinationSetting", (req, res) => {
-  res.render("destinationSetting");
+  const sql = `
+    SELECT DISTINCT
+  r.id AS routeId,
+  r.route_number AS routeNumber, 
+  r.route_name AS routeName
+FROM routes r 
+JOIN route_stops rs ON r.id = rs.route_id 
+WHERE rs.last_stop = 1;
+  `;
+
+  connection.query(sql, (err, results) => {
+    if (err) {
+      console.error("Error fetching routes:", err);
+      return res.status(500).send("Internal Server Error");
+    }
+
+    // デバッグ用：取得したデータをコンソールに表示
+    console.log("Routes data:", results);
+    console.log("Number of routes:", results.length);
+
+    // 駅データをビューに渡す
+    res.render("destinationSetting", {
+      routes: results,
+      stations: [],
+      countStations: 0,
+    });
+  });
+});
+
+// 系統設定画面（タブレット画面）へのルート
+app.get("/api/destinations/:routeId", (req, res) => {
+  const routeId = req.params.routeId;
+
+  console.log("Fetching destinations for route ID:", routeId);
+
+  const sql = `
+    SELECT 
+      s.id AS stopId,
+      s.name_jp AS destination
+    FROM route_stops rs
+    JOIN stops s ON rs.stop_id = s.id
+    WHERE rs.route_id = ? AND rs.last_stop = 1
+  `;
+
+  connection.query(sql, [routeId], (err, results) => {
+    if (err) {
+      console.error("Error fetching destinations:", err);
+      return res.status(500).json({ error: "Internal Server Error" });
+    }
+
+    console.log("Destinations found:", results);
+    res.json(results);
+  });
+});
+
+app.get("/api/stations", (req, res) => {
+  const routeId = req.query.routeId;
+  const destinationId = req.query.destination;
+
+  console.log("routeId:", routeId);
+  console.log("destinationId:", destinationId);
+
+  const destinationSql = `
+    SELECT 
+      s.id AS stopId,
+      s.name_jp AS destination
+    FROM route_stops rs
+    JOIN stops s ON rs.stop_id = s.id
+    WHERE rs.route_id = ? AND rs.last_stop = 1
+  `;
+
+  const stationsSql = `
+    SELECT
+  s.name_jp AS stationName
+FROM route_stops rs
+JOIN stops s ON rs.stop_id = s.id
+WHERE rs.route_id = ?
+AND (
+  -- 名古屋駅行きなら全駅出す
+  (
+    SELECT stop_order
+    FROM route_stops
+    WHERE route_id = ?
+      AND stop_id = ?
+  ) = (
+    SELECT MIN(stop_order)
+    FROM route_stops
+    WHERE route_id = ?
+  )
+  OR
+  -- それ以外（東海橋など）は途中まで
+  rs.stop_order <= (
+    SELECT stop_order
+    FROM route_stops
+    WHERE route_id = ?
+      AND stop_id = ?
+  )
+)
+ORDER BY
+  CASE
+    -- 名古屋駅行きなら逆順
+    WHEN (
+      SELECT stop_order
+      FROM route_stops
+      WHERE route_id = ?
+        AND stop_id = ?
+    ) = (
+      SELECT MIN(stop_order)
+      FROM route_stops
+      WHERE route_id = ?
+    )
+    THEN rs.stop_order * -1
+    ELSE rs.stop_order
+  END;
+  `;
+
+  connection.query(
+    stationsSql,
+    [
+      routeId,
+      routeId,
+      destinationId,
+      routeId,
+      routeId,
+      destinationId,
+      routeId,
+      destinationId,
+      routeId,
+    ],
+    (err, stations) => {
+      console.log("stations:", stations); // ←これも入れて
+      if (err) {
+        console.error("Error fetching stations:", err);
+        return res.status(500).json({ error: "Internal Server Error" });
+      }
+
+      connection.query(destinationSql, [routeId], (err, destinations) => {
+        if (err) {
+          console.error("Error fetching destinations:", err);
+          return res.status(500).json({ error: "Internal Server Error" });
+        }
+
+        res.json({
+          stations: stations,
+          countStations: stations.length,
+          destinations: destinations,
+        });
+      });
+    },
+  );
 });
 
 // 全駅表示画面（デスクトップ画面）へのルート

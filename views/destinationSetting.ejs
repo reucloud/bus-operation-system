@@ -17,16 +17,19 @@
       <form action="/navigation" method="get" class="tablet-form">
         <label for="系統">系統</label>
         <select name="系統" id="系統">
-          <option value="1">幹名駅2</option>
-          <option value="2">名駅20</option>
-          <option value="3">金山22</option>
+          <option value="">系統を選択してください</option>
+          <% if (routes && routes.length > 0) { %>
+            <% routes.forEach(function(route) { %>
+              <option value="<%= route.routeId %>">
+                <%= route.routeNumber %> - <%= route.routeName %>
+              </option>
+            <% }); %>
+          <% } %>
         </select>
 
         <label for="行先">行先</label>
-        <select name="行先" id="行先">
-          <option value="1">野跡駅</option>
-          <option value="2">中川車庫前</option>
-          <option value="3">戸田</option>
+        <select name="行先" id="行先" disabled>
+          <option value="">まず系統を選択してください</option>
         </select>
 
         <input type="submit" value="時刻管理画面へ" />
@@ -36,15 +39,114 @@
         <form class="printHeader" action="/operationTime" method="get">
           <h3>駅一覧</h3>
           <input class="timeManagement" type="submit" value="運行開始" />
-          <h3>合計33駅</h3>
+          <h3>合計<%= countStations %>駅</h3>
         </form>
-        <p>名古屋駅</p>
-        <p>六反公園</p>
-        <p>篠原橋</p>
-        <p>東海橋</p>
-        <p>稲永町</p>
-        <p>野跡駅</p>
+        <% if (stations && stations.length > 0) { %>
+          <% stations.forEach(function(station) { %>
+            <p><%= station.name %></p>
+          <% }); %>
+        <% } %>
       </div>
     </main>
+
+    <script>
+      // 系統セレクトボックスの変更を監視
+      document.getElementById('系統').addEventListener('change', async function() {
+        const routeId = this.value;
+        const destinationSelect = document.getElementById('行先');
+        const submitBtn = document.querySelector('input[type="submit"]');
+
+        console.log("Selected route ID:", routeId);
+
+        // 系統が選択されていない場合
+        if (!routeId) {
+          destinationSelect.disabled = true;
+          destinationSelect.innerHTML = '<option value="">まず系統を選択してください</option>';
+          submitBtn.disabled = true;
+          return;
+        }
+
+        // ローディング表示
+        destinationSelect.disabled = true;
+        destinationSelect.innerHTML = '<option value="">読み込み中...</option>';
+        submitBtn.disabled = true;
+
+        try {
+          // APIから行き先データを取得
+          const url = `/api/destinations/${routeId}`;
+          console.log("Fetching from URL:", url);
+          
+          const response = await fetch(url);
+          console.log("Response status:", response.status);
+          console.log("Response OK:", response.ok);
+          
+          if (!response.ok) {
+            const errorText = await response.text();
+            console.error("Error response:", errorText);
+            throw new Error(`データの取得に失敗しました: ${response.status}`);
+          }
+
+          const destinations = await response.json();
+          console.log("Destinations received:", destinations);
+
+          // 行き先セレクトボックスを更新
+          destinationSelect.innerHTML = '<option value="">行き先を選択してください</option>';
+          
+          if (destinations.length === 0) {
+            destinationSelect.innerHTML = '<option value="">この系統には行き先がありません</option>';
+            console.warn("No destinations found for route:", routeId);
+          } else {
+            destinations.forEach(dest => {
+              const option = document.createElement('option');
+              option.value = dest.stopId;
+              option.textContent = dest.destination;
+              destinationSelect.appendChild(option);
+            });
+          }
+
+          // 行き先セレクトボックスを有効化
+          destinationSelect.disabled = false;
+
+        } catch (error) {
+          console.error('Fetch error:', error);
+          destinationSelect.innerHTML = '<option value="">エラーが発生しました</option>';
+          alert(`行き先の取得に失敗しました: ${error.message}`);
+        }
+      });
+
+      // 行き先が選択されたら送信ボタンを有効化
+      document.getElementById('行先').addEventListener('change', function() {
+        const submitBtn = document.querySelector('input[type="submit"]');
+        const routeId = document.getElementById('系統').value;
+        const destinationId = this.value;
+
+        submitBtn.disabled = !this.value;
+
+        // サーバーに送る
+  fetch(`/api/stations?routeId=${routeId}&destination=${destinationId}`)
+    .then(res => res.json())
+    .then(data => {
+  console.log("駅一覧データ:", data);
+
+  const area = document.querySelector(".printStation");
+
+  // 駅一覧を初期化
+  area.innerHTML = `
+    <form class="printHeader" action="/operationTime" method="get">
+      <h3>駅一覧</h3>
+      <input class="timeManagement" type="submit" value="運行開始" />
+      <h3>合計${data.countStations}駅</h3>
+    </form>
+  `;
+
+  // 駅を1つずつ表示
+  data.stations.forEach(st => {
+    const p = document.createElement("p");
+    p.textContent = st.stationName;
+    area.appendChild(p);
+  });
+})
+      });
+    </script>
   </body>
 </html>
